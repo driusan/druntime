@@ -139,7 +139,7 @@ struct ExceptionHeader
 extern(C) Throwable __dmd_begin_catch(_Unwind_Exception* exceptionObject)
 {
     ExceptionHeader *eh = ExceptionHeader.toExceptionHeader(exceptionObject);
-    //printf("__dmd_begin_catch(%p), object = %p\n", eh, eh.object);
+    // printf("__dmd_begin_catch(%p), object = %p\n", eh, eh.object);
 
     auto o = eh.object;
 
@@ -148,7 +148,7 @@ extern(C) Throwable __dmd_begin_catch(_Unwind_Exception* exceptionObject)
         terminate(__LINE__);                      // eh should have been at top of stack
 
     _Unwind_DeleteException(&eh.exception_object);      // done with eh
-    return o;
+    return  o;
 }
 
 /****************************************

@@ -159,6 +159,23 @@ else version(NetBSD)
     alias c_long      time_t;
     alias uint        uid_t;
 }
+else version( DragonFlyBSD )
+{
+    alias long      blkcnt_t;
+    alias uint      blksize_t;
+    alias uint      dev_t;
+    alias uint      gid_t;
+    alias uint      ino_t;
+    alias ushort    mode_t;
+    alias ushort    nlink_t;
+    alias long      off_t;
+    alias int       pid_t;
+    //size_t (defined in core.stdc.stddef)
+    alias c_long    ssize_t;
+    alias c_long    time_t;
+    alias uint      uid_t;
+    alias uint      fflags_t;
+}
 else version (Solaris)
 {
     alias char* caddr_t;
@@ -291,6 +308,16 @@ else version( FreeBSD )
     alias uint      useconds_t;
 }
 else version(NetBSD)
+{
+    alias ulong     fsblkcnt_t;
+    alias ulong     fsfilcnt_t;
+    alias c_long    clock_t;
+    alias long      id_t;
+    alias c_long    key_t;
+    alias c_long    suseconds_t;
+    alias uint      useconds_t;
+}
+else version( DragonFlyBSD )
 {
     alias ulong     fsblkcnt_t;
     alias ulong     fsfilcnt_t;
@@ -780,6 +807,21 @@ else version(NetBSD)
     alias uint pthread_key_t;
     alias void* pthread_t;
 }
+else version( DragonFlyBSD )
+{
+    alias int lwpid_t;
+
+    alias void* pthread_attr_t;
+    alias void* pthread_cond_t;
+    alias void* pthread_condattr_t;
+    alias void* pthread_key_t;
+    alias void* pthread_mutex_t;
+    alias void* pthread_mutexattr_t;
+    alias void* pthread_once_t;
+    alias void* pthread_rwlock_t;
+    alias void* pthread_rwlockattr_t;
+    alias void* pthread_t;
+}
 else version (Solaris)
 {
     alias uint pthread_t;
@@ -949,6 +991,11 @@ else version(NetBSD)
     alias void* pthread_barrier_t;
     alias void* pthread_barrierattr_t;
 }
+else version( DragonFlyBSD )
+{
+    alias void* pthread_barrier_t;
+    alias void* pthread_barrierattr_t;
+}
 else version( Darwin )
 {
 }
@@ -995,6 +1042,10 @@ else version( FreeBSD )
 else version(NetBSD)
 {
     //already defined
+}
+else version( DragonFlyBSD )
+{
+    alias void* pthread_spinlock_t;
 }
 else version (Solaris)
 {

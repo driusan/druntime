@@ -38,7 +38,11 @@ private
   {
     import core.sys.posix.sys.types;
   }
-  version (NetBSD)
+  else version (NetBSD)
+  {
+    import core.sys.posix.sys.types;
+  }
+  else version (DragonFlyBSD)
   {
     import core.sys.posix.sys.types;
   }
@@ -213,7 +217,7 @@ else version ( NetBSD )
         long        _mbstateL;
     }
 }
-else version ( OpenBSD )
+else version ( DragonFlyBSD )
 {
     enum
     {
@@ -468,6 +472,49 @@ else version( FreeBSD )
     alias __sFILE _iobuf;
     ///
     alias shared(__sFILE) FILE;
+    ///
+    alias off_t fpos_t;
+
+    ///
+    struct __sFILE
+    {
+        ubyte*          _p;
+        int             _r;
+        int             _w;
+        short           _flags;
+        short           _file;
+        __sbuf          _bf;
+        int             _lbfsize;
+
+        void*           _cookie;
+        int     function(void*)                 _close;
+        int     function(void*, char*, int)     _read;
+        fpos_t  function(void*, fpos_t, int)    _seek;
+        int     function(void*, in char*, int)  _write;
+
+        __sbuf          _ub;
+        ubyte*          _up;
+        int             _ur;
+
+        ubyte[3]        _ubuf;
+        ubyte[1]        _nbuf;
+
+        __sbuf          _lb;
+
+        int             _blksize;
+        fpos_t          _offset;
+
+        pthread_mutex_t _fl_mutex;
+        pthread_t       _fl_owner;
+        int             _fl_count;
+        int             _orientation;
+        __mbstate_t     _mbstate;
+    }
+
+    ///
+    alias __sFILE _iobuf;
+    ///
+    alias shared(__sFILE) FILE;
 }
 else version( NetBSD )
 {
@@ -513,10 +560,10 @@ else version( NetBSD )
     ///
     alias shared(__sFILE) FILE;
 }
-else version( OpenBSD )
+else version( DragonFlyBSD )
 {
     ///
-    alias fpos_t = off_t;
+    alias off_t fpos_t;
 
     ///
     struct __sFILE
@@ -530,12 +577,12 @@ else version( OpenBSD )
         int             _lbfsize;
 
         void*           _cookie;
-        int     function(void*)                         _close;
-        int     function(void*, scope char*, int)       _read;
-        fpos_t  function(void*, fpos_t, int)            _seek;
-        int     function(void*, scope const char*, int) _write;
+        int     function(void*)                 _close;
+        int     function(void*, char*, int)     _read;
+        fpos_t  function(void*, fpos_t, int)    _seek;
+        int     function(void*, in char*, int)  _write;
 
-        __sbuf          _ext;
+        __sbuf          _ub;
         ubyte*          _up;
         int             _ur;
 
@@ -546,8 +593,16 @@ else version( OpenBSD )
 
         int             _blksize;
         fpos_t          _offset;
+
+        pthread_mutex_t _fl_mutex;
+        pthread_t       _fl_owner;
+        int             _fl_count;
+        int             _orientation;
+        __mbstate_t     _mbstate;
     }
 
+    ///
+    alias __sFILE _iobuf;
     ///
     alias shared(__sFILE) FILE;
 }
@@ -862,6 +917,29 @@ else version( OpenBSD )
     shared stdout = &__sF[1];
     ///
     shared stderr = &__sF[2];
+}
+else version( DragonFlyBSD )
+{
+    enum
+    {
+        ///
+        _IOFBF = 0,
+        ///
+        _IOLBF = 1,
+        ///
+        _IONBF = 2,
+    }
+
+    private extern shared FILE* __stdinp;
+    private extern shared FILE* __stdoutp;
+    private extern shared FILE* __stderrp;
+
+    ///
+    alias __stdinp  stdin;
+    ///
+    alias __stdoutp stdout;
+    ///
+    alias __stderrp stderr;
 }
 else version (Solaris)
 {
@@ -1368,6 +1446,28 @@ else version( OpenBSD )
     }
 
     ///
+    int  snprintf(scope char* s, size_t n, scope const char* format, ...);
+    ///
+    int  vsnprintf(scope char* s, size_t n, scope const char* format, va_list arg);
+}
+else version( DragonFlyBSD )
+{
+  // No unsafe pointer manipulation.
+  @trusted
+  {
+      ///
+    void rewind(FILE*);
+    ///
+    pure void clearerr(FILE*);
+    ///
+    pure int  feof(FILE*);
+    ///
+    pure int  ferror(FILE*);
+    ///
+    int  fileno(FILE*);
+  }
+
+  ///
     int  snprintf(scope char* s, size_t n, scope const char* format, ...);
     ///
     int  vsnprintf(scope char* s, size_t n, scope const char* format, va_list arg);

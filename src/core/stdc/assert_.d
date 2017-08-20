@@ -53,6 +53,14 @@ else version (FreeBSD)
      */
     void __assert(const(char)* exp, const(char)* file, uint line);
 }
+else version (DragonFlyBSD)
+{
+    /***
+     * Assert failure function in the FreeBSD C library.
+     */
+    void __assert(const(char)* exp, const(char)* file, uint line);
+}
+
 else version (CRuntime_Glibc)
 {
     /***
