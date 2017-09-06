@@ -13,15 +13,17 @@ nothrow:
 import core.stdc.stdint;
 public import core.sys.dragonflybsd.sys.elf_common;
 
+alias uint64_t Elf64_Addr;
 alias uint16_t Elf64_Half;
-alias uint32_t Elf64_Word;
+alias uint64_t Elf64_Off;
 alias int32_t  Elf64_Sword;
+alias int64_t  Elf64_Sxword;
+alias uint32_t Elf64_Word;
 alias uint64_t Elf64_Lword;
 alias uint64_t Elf64_Xword;
-alias int64_t  Elf64_Sxword;
-alias uint64_t Elf64_Addr;
-alias uint64_t Elf64_Off;
+
 alias Elf64_Word Elf64_Hashelt;
+
 alias Elf64_Xword Elf64_Size;
 alias Elf64_Sxword Elf64_Ssize;
 

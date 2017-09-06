@@ -256,15 +256,17 @@ else version ( DragonFlyBSD )
 {
     struct fenv_t
     {
-        ushort __control;
-        ushort __mxcsr_hi;
-        ushort __status;
-        ushort __mxcsr_lo;
-        uint __tag;
-        byte[16] __other;
+        struct __x86
+	{
+            uint __control;  /* Control word register */
+            uint __status;   /* Status word register */
+            uint __tag;      /* Tag word register */
+            uint[4] __other; /* EIP, Pointer selector, etc */
+        }
+    uint __mxcsr;        /* Control, status register */
     }
 
-    alias ushort fexcept_t;
+    alias fexcept_t = uint;
 }
 else version( CRuntime_Bionic )
 {

@@ -230,7 +230,7 @@ else version ( DragonFlyBSD )
         ///
         FILENAME_MAX = 1024,
         ///
-        TMP_MAX      = 0x7fffffff,
+        TMP_MAX      = 308915776,
         ///
         L_tmpnam     = 1024
     }
@@ -244,7 +244,7 @@ else version ( DragonFlyBSD )
     union __mbstate_t // <sys/_types.h>
     {
         char[128]   __mbstate8;
-        long        __mbstateL;
+        long __mbstateL;
     }
 }
 else version (Solaris)

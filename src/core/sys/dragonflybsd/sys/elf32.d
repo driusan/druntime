@@ -1,5 +1,5 @@
 /**
- * D header file for FreeBSD.
+ * D header file for DragonFlyBSD.
  *
  * $(LINK2 http://svnweb.freebsd.org/base/head/sys/sys/elf32.h?view=markup, sys/elf32.h)
  */
@@ -13,15 +13,13 @@ nothrow:
 import core.stdc.stdint;
 public import core.sys.dragonflybsd.sys.elf_common;
 
-alias uint16_t Elf32_Half;
-alias uint32_t Elf32_Word;
-alias int32_t  Elf32_Sword;
-alias uint64_t Elf32_Lword;
-alias uint32_t Elf32_Addr;
-alias uint32_t Elf32_Off;
-alias Elf32_Word Elf32_Hashelt;
-alias Elf32_Word Elf32_Size;
-alias Elf32_Sword Elf32_Ssize;
+alias Elf32_Addr = uint32_t;
+alias Elf32_Half = uint16_t;
+alias Elf32_Off = int32_t;
+alias Elf32_Sword = int32_t;
+alias Elf32_Word = uint32_t;
+alias Elf32_Size = uint32_t;
+alias Elf32_Hashelt = Elf32_Off;
 
 struct Elf32_Ehdr
 {
@@ -48,11 +46,11 @@ struct Elf32_Shdr
     Elf32_Word    sh_flags;
     Elf32_Addr    sh_addr;
     Elf32_Off     sh_offset;
-    Elf32_Word    sh_size;
+    Elf32_Size    sh_size;
     Elf32_Word    sh_link;
     Elf32_Word    sh_info;
-    Elf32_Word    sh_addralign;
-    Elf32_Word    sh_entsize;
+    Elf32_Size    sh_addralign;
+    Elf32_Size    sh_entsize;
 }
 
 struct Elf32_Phdr
@@ -61,10 +59,10 @@ struct Elf32_Phdr
     Elf32_Off     p_offset;
     Elf32_Addr    p_vaddr;
     Elf32_Addr    p_paddr;
-    Elf32_Word    p_filesz;
-    Elf32_Word    p_memsz;
+    Elf32_Size    p_filesz;
+    Elf32_Size    p_memsz;
     Elf32_Word    p_flags;
-    Elf32_Word    p_align;
+    Elf32_Size    p_align;
 }
 
 struct Elf32_Dyn
@@ -72,7 +70,7 @@ struct Elf32_Dyn
   Elf32_Sword   d_tag;
   union _d_un
   {
-      Elf32_Word d_val;
+      Elf32_Size d_val;
       Elf32_Addr d_ptr;
   } _d_un d_un;
 }
@@ -93,43 +91,16 @@ struct Elf32_Rela
 extern (D)
 {
     auto ELF32_R_SYM(V)(V val) { return val >> 8; }
-    auto ELF32_R_TYPE(V)(V val) { return val & 0xff; }
-    auto ELF32_R_INFO(S, T)(S sym, T type) { return (sym << 8) + (type & 0xff); }
-}
+    auto ELF32_R_TYPE(V)(V val) { return val; }
 
-alias Elf_Note Elf32_Nhdr;
-
-struct Elf32_Move
-{
-    Elf32_Lword   m_value;
-    Elf32_Word    m_info;
-    Elf32_Word    m_poffset;
-    Elf32_Half    m_repeat;
-    Elf32_Half    m_stride;
-}
-
-extern (D)
-{
-    auto ELF32_M_SYM(I)(I info) { return info >> 8; }
-    auto ELF32_M_SIZE(I)(I info) { return cast(ubyte)info; }
-    auto ELF32_M_INFO(S, SZ)(S sym, SZ size) { return (sym << 8) + cast(ubye)size; }
-}
-
-struct Elf32_Cap
-{
-    Elf32_Word    c_tag;
-    union _c_un
-    {
-        Elf32_Word      c_val;
-        Elf32_Addr      c_ptr;
-    } _c_un c_un;
+    auto ELF32_R_INFO(S, T)(S sym, T type) { return (sym << 8) + (type); }
 }
 
 struct Elf32_Sym
 {
     Elf32_Word    st_name;
     Elf32_Addr    st_value;
-    Elf32_Word    st_size;
+    Elf32_Size    st_size;
     ubyte st_info;
     ubyte st_other;
     Elf32_Half st_shndx;
@@ -139,7 +110,9 @@ extern (D)
 {
     auto ELF32_ST_BIND(T)(T val) { return cast(ubyte)val >> 4; }
     auto ELF32_ST_TYPE(T)(T val) { return val & 0xf; }
+
     auto ELF32_ST_INFO(B, T)(B bind, T type) { return (bind << 4) + (type & 0xf); }
+
     auto ELF32_ST_VISIBILITY(O)(O o) { return o & 0x03; }
 }
 
@@ -178,7 +151,7 @@ struct Elf32_Vernaux
     Elf32_Word    vna_next;
 }
 
-alias Elf32_Half Elf32_Versym;
+alias Elf32_Versym = Elf32_Half;
 
 struct Elf32_Syminfo
 {

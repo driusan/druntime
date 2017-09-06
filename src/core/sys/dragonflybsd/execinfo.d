@@ -8,6 +8,7 @@
  */
 module core.sys.dragonflybsd.execinfo;
 
+/*
 version (DragonFlyBSD):
 extern (C):
 nothrow:
@@ -131,3 +132,4 @@ private size_t formatStackFrame(char* p, size_t plen, const(void)* addr, const r
     assert(len > 0);
     return cast(size_t)len + 1; // + '\0'
 }
+*/

@@ -140,12 +140,6 @@ else version (NetBSD)
 else version (DragonFlyBSD)
 {   // time.h
     enum CLOCK_MONOTONIC         = 4;
-    // To be removed in December 2015.
-    static import core.sys.freebsd.time;
-    deprecated("Please import it from core.sys.freebsd.time instead.")
-        alias CLOCK_MONOTONIC_PRECISE = core.sys.freebsd.time.CLOCK_MONOTONIC_PRECISE;
-    deprecated("Please import it from core.sys.freebsd.time instead.")
-        alias CLOCK_MONOTONIC_FAST = core.sys.freebsd.time.CLOCK_MONOTONIC_FAST;
 }
 else version (Darwin)
 {

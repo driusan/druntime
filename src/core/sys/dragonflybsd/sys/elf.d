@@ -1,7 +1,5 @@
 /**
- * D header file for FreeBSD.
- *
- * $(LINK2 http://svnweb.freebsd.org/base/head/sys/sys/elf.h?view=markup, sys/elf.h)
+ * D header file for DragonFlyBSD.
  */
 module core.sys.dragonflybsd.sys.elf;
 

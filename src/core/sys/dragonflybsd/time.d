@@ -15,6 +15,7 @@ version (DragonFlyBSD):
 
 enum CLOCK_VIRTUAL           = 1;
 enum CLOCK_PROF              = 2;
+// enum CLOCK_MONOTONIC         = 4; // Defined in posix/time.d
 enum CLOCK_UPTIME            = 5;
 enum CLOCK_UPTIME_PRECISE    = 7;
 enum CLOCK_UPTIME_FAST       = 8;
@@ -23,3 +24,5 @@ enum CLOCK_REALTIME_FAST     = 10;
 enum CLOCK_MONOTONIC_PRECISE = 11;
 enum CLOCK_MONOTONIC_FAST    = 12;
 enum CLOCK_SECOND            = 13;
+enum CLOCK_THREAD_CPUTIME_ID = 14;
+enum CLOCK_PROCESS_CPUTIME_ID = 15;

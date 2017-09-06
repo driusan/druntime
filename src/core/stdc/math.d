@@ -267,11 +267,11 @@ version( CRuntime_DigitalMars )
     enum
     {
         ///
-        FP_FAST_FMA  = 0,
+        // FP_FAST_FMA  = 1,
         ///
-        FP_FAST_FMAF = 0,
+        FP_FAST_FMAF = 1,
         ///
-        FP_FAST_FMAL = 0,
+        // FP_FAST_FMAL = 1,
     }
 
     uint __fpclassify_f(float x);
