@@ -1,7 +1,7 @@
 /**
  * D header file for DragonFlyBSD.
  *
- * Based on the header for FreeBSD. 
+ * Based on the header from FreeBSD. 
  *
  * Authors: Martin Nowak
  */

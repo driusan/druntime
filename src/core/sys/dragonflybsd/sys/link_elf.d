@@ -12,10 +12,7 @@ nothrow:
 import core.stdc.stdint : uint64_t;
 import core.sys.dragonflybsd.sys.elf;
 
-version(D_LP64)
-    enum __ELF_NATIVE_CLASS = 64;
-else
-    enum __ELF_NATIVE_CLASS = 32;
+enum __ELF_NATIVE_CLASS = 64;
 
 template ElfW(string type)
 {
@@ -32,30 +29,26 @@ enum LA_SER_SECURE =    0x80;
 struct link_map
 {
     char*           l_addr;
-
-    version (MIPS32)
-        char*       l_offs;
-    version (MIPS64)
-        char*       l_offs;
-
     char*           l_name;
     void*           l_ld;
     link_map*       l_next, l_prev;
 }
 alias link_map Link_map;
 
-enum
+enum rstate_e
 {
     RT_CONSISTENT,
     RT_ADD,
     RT_DELETE,
-}
+};
 
 struct r_debug
 {
     int             r_version;
     link_map*       r_map;
-    void function(r_debug*, link_map*) r_brk;
+    void function(r_debug*, link_map*) *r_brk;
+
+    rstate_e        r_state;
 };
 
 struct dl_phdr_info

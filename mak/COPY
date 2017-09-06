@@ -86,8 +86,6 @@ COPY=\
 	\
 	$(IMPDIR)\core\sys\dragonflybsd\sys\cdefs.d \
 	$(IMPDIR)\core\sys\dragonflybsd\pthread_np.d \
-	$(IMPDIR)\core\sys\dragonflybsd\sys\_bitset.d \
-	$(IMPDIR)\core\sys\dragonflybsd\sys\_cpuset.d \
 	$(IMPDIR)\core\sys\dragonflybsd\sys\elf.d \
 	$(IMPDIR)\core\sys\dragonflybsd\sys\elf32.d \
 	$(IMPDIR)\core\sys\dragonflybsd\sys\elf64.d \

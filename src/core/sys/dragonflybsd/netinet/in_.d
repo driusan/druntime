@@ -7,13 +7,13 @@
     License:   $(WEB www.boost.org/LICENSE_1_0.txt, Boost License 1.0).
     Authors:   Jonathan M Davis
  +/
-module core.sys.freebsd.netinet.in_;
+module core.sys.dragonflybsd.netinet.in_;
 
-import core.sys.freebsd.sys.cdefs;
+import core.sys.dragonflybsd.sys.cdefs;
 
 public import core.sys.posix.netinet.in_;
 
-version(FreeBSD):
+version(DragonFlyBSD):
 
 extern(C) nothrow @nogc:
 

@@ -1,7 +1,5 @@
 /**
- * D header file for FreeBSD.
- *
- * $(LINK2 http://svnweb.freebsd.org/base/head/sys/sys/elf64.h?view=markup, sys/elf64.h)
+ * D header file for DragonFlyBSD.
  */
 module core.sys.dragonflybsd.sys.elf64;
 
@@ -120,7 +118,7 @@ extern (D)
 {
     auto ELF64_M_SYM(I)(I info) { return info >> 8; }
     auto ELF64_M_SIZE(I)(I info) { return cast(ubyte)info; }
-    auto ELF64_M_INFO(S, SZ)(S sym, SZ size) { return (sym << 8) + cast(ubye)size; }
+    auto ELF64_M_INFO(S, SZ)(S sym, SZ size) { return (sym << 8) + cast(ubyte)size; }
 }
 
 struct Elf64_Cap

@@ -34,7 +34,7 @@ enum
     EVFILT_USER     =  -9, /* user events */
     EVFILT_FS       =  -10, /* filesystem events */
 
-    EVFILT_MARKER   = 0xF /* placemarker for tailq */
+    EVFILT_MARKER   = 0xF, /* placemarker for tailq */
 
     EVFILT_SYSCOUNT = 10
 }
@@ -146,7 +146,7 @@ enum
     NOTE_OLDAPI = 0x04000000, /* select/poll note */
 
 
-    FILTEROP_ISFD = 0x0001 /* if ident == filedescriptor */
+    FILTEROP_ISFD = 0x0001, /* if ident == filedescriptor */
     FILTEROP_MPSAFE = 0x0002,
 }
 
