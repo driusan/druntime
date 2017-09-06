@@ -30,12 +30,13 @@ enum
     EVFILT_PROC     =  -5, /* attached to struct proc */
     EVFILT_SIGNAL   =  -6, /* attached to struct proc */
     EVFILT_TIMER    =  -7, /* timers */
-    EVFILT_PROCDESC =  -8, /* attached to process descriptors */
-    EVFILT_FS       =  -9, /* filesystem events */
-    EVFILT_LIO      = -10, /* attached to lio requests */
-    EVFILT_USER     = -11, /* User events */
-    EVFILT_SENDFILE = -12, /* attached to sendfile requests */
-    EVFILT_SYSCOUNT =  11,
+    EVFILT_EXCEPT   =  -8, /* exceptional conditions */
+    EVFILT_USER     =  -9, /* user events */
+    EVFILT_FS       =  -10, /* filesystem events */
+
+    EVFILT_MARKER   = 0xF /* placemarker for tailq */
+
+    EVFILT_SYSCOUNT = 10
 }
 
 extern(D) void EV_SET(kevent_t* kevp, typeof(kevent_t.tupleof) args)
@@ -60,7 +61,6 @@ enum
     EV_DELETE       = 0x0002, /* delete event from kq */
     EV_ENABLE       = 0x0004, /* enable event */
     EV_DISABLE      = 0x0008, /* disable event (not reported) */
-    EV_FORCEONESHOT = 0x0100,          /* enable _ONESHOT and force trigger */
 
     /* flags */
     EV_ONESHOT      = 0x0010, /* only report one occurrence */
@@ -69,13 +69,12 @@ enum
     EV_DISPATCH     = 0x0080, /* disable event after reporting */
 
     EV_SYSFLAGS     = 0xF000, /* reserved by system */
-    EV_DROP         = 0x1000, /* note should be dropped */
     EV_FLAG1        = 0x2000, /* filter-specific flag */
-    EV_FLAG2        = 0x4000, /* filter-specific flag */
 
     /* returned values */
     EV_EOF          = 0x8000, /* EOF detected */
     EV_ERROR        = 0x4000, /* error, data contains errno */
+    EV_NODATA       = 0x1000, /* EOF and no more data */
 }
 
 enum
@@ -103,7 +102,13 @@ enum
      * data/hint flags for EVFILT_{READ|WRITE}, shared with userspace
      */
     NOTE_LOWAT      = 0x0001, /* low water mark */
-    NOTE_FILE_POLL  = 0x0002, /* behave like poll() */
+
+    /**
+     * data/hint flags for EVFILT_EXCEPT, shared with userspace and with
+     * EVFILT_{READ/WRITE}
+     */
+
+    NOTE_OOB        = 0x0002, /* OOB data on a socket */
 
     /*
      * data/hint flags for EVFILT_VNODE, shared with userspace
@@ -115,12 +120,6 @@ enum
     NOTE_LINK       = 0x0010, /* link count changed */
     NOTE_RENAME     = 0x0020, /* vnode was renamed */
     NOTE_REVOKE     = 0x0040, /* vnode access was revoked */
-    NOTE_OPEN       = 0x0080, /* vnode was opened */
-    NOTE_CLOSE      = 0x0100, /* file closed, fd did not
-                                 allowed write */
-    NOTE_CLOSE_WRITE = 0x0200, /* file closed, fd did allowed
-                                  write */
-    NOTE_READ       = 0x0400, /* file was read */
 
     /*
      * data/hint flags for EVFILT_PROC and EVFILT_PROCDESC, shared with userspace
@@ -136,11 +135,19 @@ enum
     NOTE_TRACKERR   = 0x00000002, /* could not track child */
     NOTE_CHILD      = 0x00000004, /* am a child process */
 
-    /* additional flags for EVFILT_TIMER */
-    NOTE_SECONDS    = 0x00000001, /* data is seconds */
-    NOTE_MSECONDS   = 0x00000002, /* data is milliseconds */
-    NOTE_USECONDS   = 0x00000004, /* data is microseconds */
-    NOTE_NSECONDS   = 0x00000008, /* data is nanoseconds */
+    /*
+     * Flag indicating hint is a signal. Used by EVFILT_SIGNAL and also
+     * shared by EVFILT_PROC (all knotes attached to p->p_klist)
+     *
+     * NOTE_OLDAPI is used to signal that standard filters are being called
+     * from the select/poll wrapper.
+     */
+    NOTE_SIGNAL = 0x08000000,
+    NOTE_OLDAPI = 0x04000000, /* select/poll note */
+
+
+    FILTEROP_ISFD = 0x0001 /* if ident == filedescriptor */
+    FILTEROP_MPSAFE = 0x0002,
 }
 
 int kqueue();
