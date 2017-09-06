@@ -565,17 +565,29 @@ else version( DragonFlyBSD )
     ///
     alias off_t fpos_t;
 
+    alias mbstate_t = __mbstate_t;
     ///
+    struct wchar_io_data
+    {
+	mbstate_t wcio_mbstate_in;
+	mbstate_t wcio_mbstate_out;
+
+	wchar_t[1] wcio_ungetwc_buf;
+	size_t wcio_ungetwc_inbuf;
+
+	int wcio_mode; /* orientation */
+    }
+
     struct __sFILE
     {
         ubyte*          _p;
-        int             _r;
-        int             _w;
-        short           _flags;
-        short           _file;
-        __sbuf          _bf;
-        int             _lbfsize;
+        int         _flags;
+	int         _fileno;
+        size_t             _r;
+        size_t             _w;
+        size_t       _lbfsize;
 
+	__sbuf _buf; 
         void*           _cookie;
         int     function(void*)                 _close;
         int     function(void*, char*, int)     _read;
@@ -583,7 +595,6 @@ else version( DragonFlyBSD )
         int     function(void*, in char*, int)  _write;
 
         __sbuf          _ub;
-        ubyte*          _up;
         int             _ur;
 
         ubyte[3]        _ubuf;
@@ -594,11 +605,12 @@ else version( DragonFlyBSD )
         int             _blksize;
         fpos_t          _offset;
 
+	ubyte *_up;
         pthread_mutex_t _fl_mutex;
         pthread_t       _fl_owner;
         int             _fl_count;
-        int             _orientation;
-        __mbstate_t     _mbstate;
+
+	wchar_io_data _wcio;
     }
 
     ///
